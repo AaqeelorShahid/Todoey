@@ -7,19 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F72595192782FAA80034755B /* item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72595182782FAA80034755B /* item.swift */; };
 		F7B538FA276D21F1009EF124 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B538F9276D21F1009EF124 /* AppDelegate.swift */; };
 		F7B538FC276D21F1009EF124 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B538FB276D21F1009EF124 /* SceneDelegate.swift */; };
-		F7B538FE276D21F1009EF124 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B538FD276D21F1009EF124 /* ViewController.swift */; };
+		F7B538FE276D21F1009EF124 /* ToDoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B538FD276D21F1009EF124 /* ToDoListViewController.swift */; };
 		F7B53901276D21F1009EF124 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7B538FF276D21F1009EF124 /* Main.storyboard */; };
 		F7B53903276D21F2009EF124 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7B53902276D21F2009EF124 /* Assets.xcassets */; };
 		F7B53906276D21F2009EF124 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7B53904276D21F2009EF124 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F72595182782FAA80034755B /* item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = item.swift; sourceTree = "<group>"; };
 		F7B538F6276D21F1009EF124 /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7B538F9276D21F1009EF124 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7B538FB276D21F1009EF124 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F7B538FD276D21F1009EF124 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F7B538FD276D21F1009EF124 /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
 		F7B53900276D21F1009EF124 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F7B53902276D21F2009EF124 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7B53905276D21F2009EF124 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -37,6 +39,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F72595172782FA880034755B /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				F72595182782FAA80034755B /* item.swift */,
+			);
+			path = "Data Model";
+			sourceTree = "<group>";
+		};
 		F7B538ED276D21F1009EF124 = {
 			isa = PBXGroup;
 			children = (
@@ -56,9 +66,10 @@
 		F7B538F8276D21F1009EF124 /* Todoey */ = {
 			isa = PBXGroup;
 			children = (
+				F72595172782FA880034755B /* Data Model */,
 				F7B538F9276D21F1009EF124 /* AppDelegate.swift */,
 				F7B538FB276D21F1009EF124 /* SceneDelegate.swift */,
-				F7B538FD276D21F1009EF124 /* ViewController.swift */,
+				F7B538FD276D21F1009EF124 /* ToDoListViewController.swift */,
 				F7B538FF276D21F1009EF124 /* Main.storyboard */,
 				F7B53902276D21F2009EF124 /* Assets.xcassets */,
 				F7B53904276D21F2009EF124 /* LaunchScreen.storyboard */,
@@ -138,7 +149,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7B538FE276D21F1009EF124 /* ViewController.swift in Sources */,
+				F72595192782FAA80034755B /* item.swift in Sources */,
+				F7B538FE276D21F1009EF124 /* ToDoListViewController.swift in Sources */,
 				F7B538FA276D21F1009EF124 /* AppDelegate.swift in Sources */,
 				F7B538FC276D21F1009EF124 /* SceneDelegate.swift in Sources */,
 			);
