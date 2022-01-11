@@ -6,19 +6,21 @@
 //
 
 import UIKit
+import CoreData
 
 class ToDoListViewController: UITableViewController {
 
-    var items = [item]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("items.plist")
+    var items = [Item]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        loadItems()
+//        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        print (dataFilePath)
+          loadItems()
         
     }
-
     
     //MARK: - TableView DataSource Methods
     
@@ -35,25 +37,24 @@ class ToDoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        if (items[indexPath.row].done == true) {
-//            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-//            items[indexPath.row].done = false
-//            saveItems()
-//        } else {
-//            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-//            items[indexPath.row].done = true
-//            saveItems()
-//        }
-//
-
-  
         items[indexPath.row].done = !items[indexPath.row].done
+
         tableView.reloadData()
         saveItems()
+
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+//
+//    func deleteItem (){
+//        context.delete(items[indexPath.row])
+//        items.remove(at: indexPath.row)
+//
+//        saveItems()
+//        tableView.reloadData()
+//    }
+//
+    
 
     //MARK: - Add new item
 
@@ -63,12 +64,13 @@ class ToDoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Item in List", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add item", style: .default) { UIAlertAction in
-            let i = item()
+            // Here we're getting instance of persistent container
+            
+            // Here we're getting teh Item from DataModel and adding the data
+            let i = Item(context: self.context)
             i.title = textField.text!
             i.done = false
-            
             self.items.append(i)
-            
             self.saveItems()
         }
         
@@ -81,28 +83,50 @@ class ToDoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func saveItems () {
-        let encoder = PropertyListEncoder()
+    // Mark:- Encoder Implementation
+    
+    
+//    func saveItems () {
+//        let encoder = PropertyListEncoder()
+//        do {
+//            let data = try encoder.encode(items)
+//            try data.write(to: self.dataFilePath!)
+//        } catch {
+//            print("Error encoding item, \(error)")
+//        }
+//
+//        self.tableView.reloadData()
+//    }
+//
+//    func loadItems () {
+//        if let data = try? Data(contentsOf: dataFilePath!) {
+//            let decoder = PropertyListDecoder()
+//            do {
+//                items = try decoder.decode([item].self, from: data)
+//            } catch {
+//                print("Error in decoding item \(error)")
+//            }
+//        }
+//    }
+    
+    func saveItems(){
         do {
-            let data = try encoder.encode(items)
-            try data.write(to: self.dataFilePath!)
+            try context.save()
         } catch {
-            print("Error encoding item, \(error)")
+            print("Error saving context \(error)")
         }
-        
         self.tableView.reloadData()
     }
     
-    func loadItems () {
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-                items = try decoder.decode([item].self, from: data)
-            } catch {
-                print("Error in decoding item \(error)")
-            }
+    func loadItems() {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+           items = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context \(error)")
         }
     }
+
     
     
 }
