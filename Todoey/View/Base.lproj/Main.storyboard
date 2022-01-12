@@ -24,7 +24,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToDoItemCell" id="QOV-1r-9Sf">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="QOV-1r-9Sf">
                                 <rect key="frame" x="0.0" y="88.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QOV-1r-9Sf" id="FpL-gj-mvp">
@@ -50,7 +50,7 @@
             </objects>
             <point key="canvasLocation" x="1542" y="29"/>
         </scene>
-        <!--Category View Controller-->
+        <!--Categories-->
         <scene sceneID="x5n-ru-0ya">
             <objects>
                 <tableViewController id="G0L-82-2tJ" customClass="CategoryViewController" customModule="Todoey" customModuleProvider="target" sceneMemberID="viewController">
@@ -59,7 +59,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryCell" id="fc3-2I-Qy1">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="fc3-2I-Qy1" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
                                 <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fc3-2I-Qy1" id="15L-zX-Nd1">
@@ -73,7 +73,7 @@
                             <outlet property="delegate" destination="G0L-82-2tJ" id="GqS-X7-E21"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="3EV-RD-3cl">
+                    <navigationItem key="navigationItem" title="Categories" id="3EV-RD-3cl">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xcF-go-x0J">
                             <connections>
                                 <action selector="addPressed:" destination="G0L-82-2tJ" id="Cgd-aK-04f"/>

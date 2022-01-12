@@ -6,29 +6,32 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
-class CategoryViewController: UITableViewController {
+
+class CategoryViewController: SwipeTableViewController {
     
-    var category = [Category]()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let realm = try! Realm()
+    
+    var category: Results <Category>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories()
+        
+        tableView.rowHeight = 80.0
     }
   
     
     //MARK: - TableView Data Source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return category.count
+        return category?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        cell.textLabel?.text = category[indexPath.row].name
-        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.textLabel?.text = category?[indexPath.row].name ?? "No Categories added"
         return cell
     }
     
@@ -38,13 +41,11 @@ class CategoryViewController: UITableViewController {
         var categoryField = UITextField()
         
         let alert = UIAlertController(title: "Add new category", message: "Enter the category title!", preferredStyle: .alert)
+        
         let alertAction = UIAlertAction(title: "Add Category", style: .default) { Action in
-            let newCategory = Category (context: self.context)
-            newCategory.name = categoryField.text
-            
-            self.category.append(newCategory)
-            self.saveData()
-            
+            let newCategory = Category()
+            newCategory.name = categoryField.text!
+            self.saveData(category: newCategory)
         }
         
         alert.addTextField { textField in
@@ -67,15 +68,17 @@ class CategoryViewController: UITableViewController {
         let destinationVC = segue.destination as! ToDoListViewController
         
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = category[indexPath.row]
+            destinationVC.selectedCategory = category?[indexPath.row]
         }
     }
     
     //MARK: - Data Manipulation
     
-    func saveData() {
+    func saveData(category: Category) {
         do {
-            try context.save()
+            try realm.write({
+                realm.add(category)
+            })
         } catch {
             print("Error in saving data \(error)")
         }
@@ -83,15 +86,31 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadCategories (with request: NSFetchRequest <Category> = Category.fetchRequest()) {
-        do {
-            let data = try context.fetch(request)
-            category = data
-        } catch {
-            print("Error in loading data \(error)")
+    func loadCategories() {
+        category = realm.objects(Category.self)
+        tableView.reloadData()
+    }
+    
+    
+    //MARK: - Delete from Swipe Table
+    
+    override func updateModel(at indexpath: IndexPath) {
+        super.updateModel(at: indexpath)
+        deleteCategory(row: indexpath.row)
+    }
+    
+    func deleteCategory(row: Int) {
+        
+        if let categoryForDeletion = category?[row] {
+            do {
+                try realm.write {
+                    realm.delete(categoryForDeletion)
+                }
+            } catch {
+                print("error while deleting \(error)")
+            }
         }
         
-        tableView.reloadData()
     }
     
 }
