@@ -12,16 +12,12 @@ class ToDoListViewController: UITableViewController {
 
     var items = [Item]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        print (dataFilePath)
-          loadItems()
-        
+    var selectedCategory : Category? {
+        didSet {
+            loadItems()
+        }
     }
-    
+
     //MARK: - TableView DataSource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -70,6 +66,8 @@ class ToDoListViewController: UITableViewController {
             let i = Item(context: self.context)
             i.title = textField.text!
             i.done = false
+            i.parentCategory = self.selectedCategory
+            
             self.items.append(i)
             self.saveItems()
         }
@@ -118,16 +116,52 @@ class ToDoListViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    func loadItems() {
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        
+        //Here what we're doing is making multiple predicate which makes compund predicate
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
+
+        
         do {
            items = try context.fetch(request)
         } catch {
             print("Error fetching data from context \(error)")
         }
+        
+        tableView.reloadData()
     }
-
     
+}
+
+
+//MARK: - Search Bar Methods
+extension ToDoListViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest <Item> = Item.fetchRequest()
+        var predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)] //Soring the items by title column in DB
+        
+        loadItems(with: request, predicate: predicate)
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
     
 }
 
